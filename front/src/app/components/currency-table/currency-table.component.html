@@ -1,0 +1,33 @@
+<div class="table-responsive t">
+  <table
+    *ngIf="currencyTable"
+    class="table-fixed table-stripped table-bordered table-hover"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Currency</th>
+        <th scope="col">Code</th>
+        <ng-container
+          *ngIf="currencyTable.table == 'C'; then askbid; else mid"
+        ></ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rate of currencyTable.rates">
+        <td class="col">{{ rate.currency }}</td>
+        <td class="col">{{ rate.code }}</td>
+        <td *ngIf="rate.ask" class="col">{{ rate.ask }}</td>
+        <td *ngIf="rate.bid" class="col">{{ rate.bid }}</td>
+        <td *ngIf="rate.mid" class="col">{{ rate.mid }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #askbid>
+  <th scope="col">Ask</th>
+  <th scope="col">Bid</th>
+</ng-template>
+<ng-template #mid>
+  <th scope="col">Mid</th>
+</ng-template>

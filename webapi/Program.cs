@@ -1,8 +1,17 @@
+using webapi.Interfaces;
+using webapi.Services;
+using webapi.Entites;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnectionString")));
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+builder.Services.AddHttpClient();
+builder.Services.AddHostedService<WorkerService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,9 +25,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().WithOrigins(builder.Configuration.GetSection("ApiUrl:FrontendUrl").Value!));
 
-app.UseAuthorization();
+app.UseRouting();
 
 app.MapControllers();
 

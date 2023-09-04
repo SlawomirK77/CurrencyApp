@@ -1,0 +1,15 @@
+<div class="main-wrapper">
+  <div class="table-wrapper">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item" *ngFor="let button of buttons">
+        <button class="nav-link" (click)="setTable(button)">
+          {{ button }}
+        </button>
+      </li>
+    </ul>
+  </div>
+  <app-currency-table
+    *ngIf="selectedTable"
+    [currencyTable]="selectedTable"
+  ></app-currency-table>
+</div>

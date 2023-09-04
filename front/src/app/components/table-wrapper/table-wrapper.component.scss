@@ -1,0 +1,11 @@
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 0;
+  .table-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

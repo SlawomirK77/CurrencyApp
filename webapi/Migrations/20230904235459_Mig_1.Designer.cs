@@ -12,8 +12,8 @@ using webapi.Entites;
 namespace webapi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230902170456_Mig_2")]
-    partial class Mig_2
+    [Migration("20230904235459_Mig_1")]
+    partial class Mig_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,11 +56,13 @@ namespace webapi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Ask")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal?>("Ask")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(12,10)");
 
-                    b.Property<decimal>("Bid")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal?>("Bid")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(12,10)");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -70,24 +72,29 @@ namespace webapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CurrencyTableEntityId")
+                    b.Property<Guid>("CurrencyTableId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Mid")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal?>("Mid")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(12,10)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrencyTableEntityId");
+                    b.HasIndex("CurrencyTableId");
 
                     b.ToTable("Rates");
                 });
 
             modelBuilder.Entity("webapi.Entites.RateEntity", b =>
                 {
-                    b.HasOne("webapi.Entites.CurrencyTableEntity", null)
+                    b.HasOne("webapi.Entites.CurrencyTableEntity", "CurrencyTable")
                         .WithMany("Rates")
-                        .HasForeignKey("CurrencyTableEntityId");
+                        .HasForeignKey("CurrencyTableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CurrencyTable");
                 });
 
             modelBuilder.Entity("webapi.Entites.CurrencyTableEntity", b =>

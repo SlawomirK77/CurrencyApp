@@ -69,7 +69,7 @@ namespace webapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CurrencyTableEntityId")
+                    b.Property<Guid>("CurrencyTableId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("Mid")
@@ -78,20 +78,20 @@ namespace webapi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrencyTableEntityId");
+                    b.HasIndex("CurrencyTableId");
 
                     b.ToTable("Rates");
                 });
 
             modelBuilder.Entity("webapi.Entites.RateEntity", b =>
                 {
-                    b.HasOne("webapi.Entites.CurrencyTableEntity", "CurrencyTableEntity")
+                    b.HasOne("webapi.Entites.CurrencyTableEntity", "CurrencyTable")
                         .WithMany("Rates")
-                        .HasForeignKey("CurrencyTableEntityId")
+                        .HasForeignKey("CurrencyTableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CurrencyTableEntity");
+                    b.Navigation("CurrencyTable");
                 });
 
             modelBuilder.Entity("webapi.Entites.CurrencyTableEntity", b =>

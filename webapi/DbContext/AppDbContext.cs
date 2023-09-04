@@ -15,6 +15,11 @@ public class AppDbContext : DbContext
         builder.Entity<RateEntity>().Property(x => x.Ask).HasPrecision(12, 10);
         builder.Entity<RateEntity>().Property(x => x.Bid).HasPrecision(12, 10);
         builder.Entity<RateEntity>().Property(x => x.Mid).HasPrecision(12, 10);
+
+        builder.Entity<CurrencyTableEntity>()
+        .HasMany<RateEntity>(ct => ct.Rates)
+        .WithOne(r => r.CurrencyTable)
+        .HasForeignKey(ct => ct.CurrencyTableId);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)

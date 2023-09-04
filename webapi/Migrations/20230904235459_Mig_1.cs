@@ -18,8 +18,8 @@ namespace webapi.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Table = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     No = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TradingDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EffectiveDate = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TradingDate = table.Column<DateTime>(type: "date", nullable: true),
+                    EffectiveDate = table.Column<DateTime>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,25 +33,26 @@ namespace webapi.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Ask = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Mid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CurrencyTableEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Bid = table.Column<decimal>(type: "decimal(12,10)", precision: 12, scale: 10, nullable: true),
+                    Ask = table.Column<decimal>(type: "decimal(12,10)", precision: 12, scale: 10, nullable: true),
+                    Mid = table.Column<decimal>(type: "decimal(12,10)", precision: 12, scale: 10, nullable: true),
+                    CurrencyTableId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rates_CurrencyTables_CurrencyTableEntityId",
-                        column: x => x.CurrencyTableEntityId,
+                        name: "FK_Rates_CurrencyTables_CurrencyTableId",
+                        column: x => x.CurrencyTableId,
                         principalTable: "CurrencyTables",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rates_CurrencyTableEntityId",
+                name: "IX_Rates_CurrencyTableId",
                 table: "Rates",
-                column: "CurrencyTableEntityId");
+                column: "CurrencyTableId");
         }
 
         /// <inheritdoc />
